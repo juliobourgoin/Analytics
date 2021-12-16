@@ -1,0 +1,53 @@
+<html>
+   <head>
+      <!--Load the AJAX API-->
+      <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+      <script type="text/javascript" src="/analytics.js"></script>
+      <script>
+         $("input").keypress(function(e){
+            var charCode = !e.charCode ? e.which : e.charCode;
+         
+            if(/* Test for special character */ )
+                e.preventDefault();
+         })
+      </script>
+      <title></title>
+   </head>
+   <body onunload="window.history.forward();">
+      <div id="navigation_start" class="navbar navbar-default navbar-fixed-top" role="navigation">
+         <a class="logo">
+         <img src="KD-Group_logo_rgb.png" align="center" width="140" />
+         </a> 
+         <a class="logo">
+         <img src="KURIO%20ANALYTICS.png" align="center" width="820"  />
+         </a>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <form class="login-form-analytics" action="/login" method="post"  style="width:393px;text-align:center;margin:auto;" color="black">
+         <!--<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login : <input type="text" name="Login" /></p>
+            <p>Password : <input type="password" name="password" />
+            <input type="Submit" Value="Validate" /></p>-->
+      <form class="form-signin">
+         <h2 class="form-signin-heading">Please sign in</h2>
+         <label for="inputEmail" class="sr-only" >Login Name</label> 
+         <input type="text" id="inputtext" class="form-control" autocomplete="off" placeholder="Login Name" name="Login" required="" autofocus="" /> 
+		 <label for="inputPassword" class="sr-only">Password</label> 
+         <input type="password" id="inputPassword" class="form-control" autocomplete="off" data-message="Veuillez renseigner votre prout" placeholder="Password" name="password" required="" />
+         <br />
+         <br />
+         <button class="btn btn-lg btn-primary btn-block" type="submit" value="Validate">Sign in</button>
+         <br />
+         <b>Note: Contact the IT Administrator to have an Account if needed.</b>
+      </form>
+      </form>
+   </body>
+</html>

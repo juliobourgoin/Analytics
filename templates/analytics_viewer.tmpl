@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <meta name="generator" content="HTML Tidy for HTML5 for Windows version 5.2.0" />
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="/analytics.js?v=%3C?=%20filemtime(&#39;/analytics.js&#39;);%20?%3E"></script>
+    <script type="text/javascript">
+
+// Instantiate and draw our chart, passing in some options.
+
+</script>
+    <title></title>
+  </head>
+  <body>
+    <div id="navigation_layout" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <a class="logo">
+        <img src="/KD-Group_logo_rgb.png" align="left" width="52" />
+      </a>
+      <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Kurio Analytics</a>
+         </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/analytics_viewer_choice">Home</a></li>
+				<li><a href="/Application_details">Application Details</a></li>
+				<li><a href="/analytics_viewer">Charts</a></li>
+				<li><a href="/analytics_viewer_details">Details</a></li>
+				<li><a href="/login">Logout</a></li>
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </div>
+    <b>ANALYTICS DASHBOARD FOR :</b>
+    <br />
+    <form action="/extract_data_schema_choice" method="post">
+    <br />
+    <select id="select_version" class="form-control" name="version_selected" style="width:393px;text-align:center;margin:auto;">
+      <option value="2">2013</option>
+      <option value="3">2014</option>
+      <option value="4">2015</option>
+      <option value="5" selected="true">2016</option>
+      <option value="6">2017</option>
+    </select> 
+    <select id="select_country" class="form-control" name="serial_selected"
+    style="width:393px;text-align:center;margin:auto;"></select>
+    <br />
+    <img id="loading_icon" src="chargement.gif" />
+    <br />
+    <p>
+      <input type="hidden" id="serial1" name="serial1" />
+    </p>
+    <p>
+      <input type="hidden" id="version1" name="version1" value="4" />
+    </p>
+    <!--Div that will hold the pie chart-->
+    <div id="tableaux">
+      <br />
+      <div id="tabRomId" style="text-align;center"></div>
+      <br />
+      <div id="tabActivation"></div>
+      <br />
+      <div id="profile"></div>
+      <br />
+      <div id="appPrefTable"></div>
+      <br />
+      <div id="appPref"></div>
+    </div></form>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+body {
+	padding-top: 50px;
+}
+.starter-template {
+	padding: 40px 15px;
+	text-align: center;
+}
+table, tr, td { 
+
+	border-collapse: separate; 
+	border:0;
+	border-color:Black;
+	border-width:1px;
+	margin : 10px auto auto auto;
+}

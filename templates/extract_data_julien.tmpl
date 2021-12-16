@@ -1,0 +1,316 @@
+<html>
+<head>
+       <style type="text/css">
+ 
+            body {font-family:Arial, Sans-Serif;}
+ 
+            #container {width:300px; margin:0 auto;}
+ 
+            /* Nicely lines up the labels. */
+            form label {display:inline-block; width:140px;}
+ 
+            /* You could add a class to all the input boxes instead, if you like. That would be safer, and more backwards-compatible */
+            form input[type="text"],
+            form input[type="password"],
+            form input[type="email"] {width:160px;}
+ 
+            form .line {clear:both;}
+            form .line.submit {text-align:right;}
+ 
+        </style>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script  >
+// Load the Visualization API and the piechart package.
+
+google.load('visualization', '1.0', {
+    'packages': ['table', 'corechart']
+});
+var data;
+
+function searchData() {
+console.log("DownloadData");
+    if ( $('input[name=tabToSearch]:checked').val() == "Serial_analytics_v4")
+    {
+    var curefSearch = document.getElementById("curefToSearch").value
+    var serialSearch = document.getElementById("serialToSearch").value;
+    var emailSearch = document.getElementById("emailToSearch").value;
+    var macAdressSearch = document.getElementById("macAdressToSearch").value;
+    var tabToSearch = $('input[name=tabToSearch]:checked').val();
+    var searchLike = $('input[name=searchLike]:checked').val();
+	if (curefSearch.match(/KD/)){
+	window.alert ("VEUILLEZ SAISIR UN CUREF DIFFERENT DE KD%");
+	
+	} 
+	else{
+	$.ajax({
+        url: "/analytics_api_search_from_serial_mail_mac?curefToSearch="+curefSearch+"&serialToSearch="+serialSearch + "&emailToSearch="+emailSearch+"&macAdressToSearch="+macAdressSearch+"&tabToSearch="+tabToSearch+"&searchLike="+searchLike,
+        dataType: "json",
+        success: function(data) {
+            drawChart(data);
+        }
+    });
+	}
+    }
+    else
+    {
+    var serialSearch = document.getElementById("serialToSearch").value;
+    var emailSearch = document.getElementById("emailToSearch").value;
+    var macAdressSearch = document.getElementById("macAdressToSearch").value;
+    var tabToSearch = $('input[name=tabToSearch]:checked').val();
+    var searchLike = $('input[name=searchLike]:checked').val();
+
+    $.ajax({
+        url: "/analytics_api_search_from_serial_mail_mac?serialToSearch=" +serialSearch + "&emailToSearch="+emailSearch+"&macAdressToSearch="+macAdressSearch+"&tabToSearch="+tabToSearch+"&searchLike="+searchLike,
+        dataType: "json",
+        success: function(data) {
+            drawChart(data);
+        }
+    });
+    }
+
+}
+/*function DownloadData() {
+	console.log("DownloadData");
+  if ( $('input[name=tabToSearch]:checked').val() == "Serial_analytics_v4")
+    {
+    var curefSearch = document.getElementById("curefToSearch").value
+    var serialSearch = document.getElementById("serialToSearch").value;
+    var emailSearch = document.getElementById("emailToSearch").value;
+    var macAdressSearch = document.getElementById("macAdressToSearch").value;
+    var tabToSearch = $('input[name=tabToSearch]:checked').val();
+    var searchLike = $('input[name=searchLike]:checked').val();
+
+    $.ajax({
+		type: "POST",
+        url: "/extract_serial_download?serialToSearch=" +serialSearch + "&emailToSearch="+emailSearch+"&macAdressToSearch="+macAdressSearch+"&tabToSearch="+tabToSearch+"&searchLike="+searchLike,
+        dataType: "json",
+        success: function(data) {
+            drawChart(data);
+        }
+    });
+    }
+    else
+    {
+    var serialSearch = document.getElementById("serialToSearch").value;
+    var emailSearch = document.getElementById("emailToSearch").value;
+    var macAdressSearch = document.getElementById("macAdressToSearch").value;
+    var tabToSearch = $('input[name=tabToSearch]:checked').val();
+    var searchLike = $('input[name=searchLike]:checked').val();
+
+    $.ajax({
+		type: "POST",
+        url: "/extract_serial_download?serialToSearch=" +serialSearch + "&emailToSearch="+emailSearch+"&macAdressToSearch="+macAdressSearch+"&tabToSearch="+tabToSearch+"&searchLike="+searchLike,
+        dataType: "json",
+        success: function(data) {
+            drawChart(data);
+        }
+    });
+    }
+
+}*/
+
+function drawChart(obj) {
+    var cssClassNames = {
+    'headerRow': 'italic-darkblue-font large-font bold-font',
+    'tableRow': '',
+    'oddTableRow': 'beige-background',
+    'selectedTableRow': 'orange-background large-font',
+    'hoverTableRow': '',
+    'headerCell': 'gold-border',
+    'tableCell': '',
+    'rowNumberCell': 'underline-blue-font'};
+	data = new google.visualization.DataTable();
+    data.addColumn('string');
+    data.addColumn('string');
+
+    var tabToSearch = $('input[name=tabToSearch]:checked').val();
+
+    for (var i = 0; i < obj.length; i++) {
+        if (i != 0) {
+            data.addRow(["", ""]);
+            data.addRow(["Other tab", "New Tab Infos"]);
+			nblig=data.getNumberOfRows()-1;
+			nbcol=data.getNumberOfColumns()-1;
+			data.setCell(nblig, nbcol-1,String(["Other tab"]),String(["Other tab"]), {'className': 'bold-white-font kurio-background'});
+			data.setCell(nblig, nbcol,String(["New Tab Infos"]),String(["New Tab Infos"]), {'className':'bold-white-font kurio-background'});
+        }
+
+        if (tabToSearch == "register") {
+        	data.addRow(["Serial", obj[i].Serial]);
+            data.addRow(["build model", obj[i].BuildModel]);
+            data.addRow(["Mac adress", obj[i].MACAddress]);
+            data.addRow(["Email", obj[i].ParentEmail]);
+            data.addRow(["First activation", obj[i].FirstActivation]);
+        } else if (tabToSearch == "Serial_analytics_v4"){
+
+      		data.addRow(["Serial", obj[i].Serial]);
+			nblig=data.getNumberOfRows()-1;
+			nbcol=data.getNumberOfColumns()-1;
+			data.setCell(nblig, nbcol-1,String(["Serial"]),String(["Serial"]), {'className': 'bold-white-font kurio-background'});
+
+            data.addRow(["curef", obj[i].Curef]);
+            nblig=data.getNumberOfRows()-1;
+			nbcol=data.getNumberOfColumns()-1;
+			data.setCell(nblig, nbcol-1,String(["curef"]),String(["curef"]), {'className': 'bold-white-font kurio-background'});
+           
+		   data.addRow(["build rom", obj[i].RoBuildDisplayId.String]);
+            nblig=data.getNumberOfRows()-1;
+			nbcol=data.getNumberOfColumns()-1;
+			data.setCell(nblig, nbcol-1,String(["build rom"]),String(["build rom"]), {'className': 'bold-white-font kurio-background'});
+           
+     		data.addRow(["Kurio System Version", obj[i].KurioSystemVersion]);
+            nblig=data.getNumberOfRows()-1;
+			nbcol=data.getNumberOfColumns()-1;
+			data.setCell(nblig, nbcol-1,String(["Kurio System Version"]),String(["Kurio System Version"]), {'className': 'bold-white-font kurio-background'});
+           
+			data.addRow(["Mac adress", obj[i].MACAddress.String]);
+            nblig=data.getNumberOfRows()-1;
+			nbcol=data.getNumberOfColumns()-1;
+			data.setCell(nblig, nbcol-1,String(["Mac adress"]),String(["Mac adress"]), {'className': 'bold-white-font kurio-background'});
+           
+			data.addRow(["first activation", obj[i].FirstActivation.Time]);
+            nblig=data.getNumberOfRows()-1;
+			nbcol=data.getNumberOfColumns()-1;
+			data.setCell(nblig, nbcol-1,String(["first activation"]),String(["first activation"]), {'className': 'bold-white-font kurio-background'});
+            
+			data.addRow(["EMail", obj[i].ParentEmail]);
+			nblig=data.getNumberOfRows()-1;
+			nbcol=data.getNumberOfColumns()-1;
+			data.setCell(nblig, nbcol-1,String(["EMail"]),String(["EMail"]), {'className': 'bold-white-font kurio-background'});
+           
+        }else if (tabToSearch == "Serial_analytics"){
+        	data.addRow(["Serial", obj[i].Serial]);
+            data.addRow(["build rom", obj[i].RoBuildDisplayId.String]);
+            data.addRow(["Kurio System Version", obj[i].KurioSystemVersion]);
+            data.addRow(["Mac adress", obj[i].MACAddress.String]);
+            data.addRow(["first activation", obj[i].FirstActivation.Time]);
+            data.addRow(["EMail", obj[i].ParentEmail]);
+        }else if (tabToSearch == "Serial"){
+        	data.addRow(["Serial", obj[i].Serial]);
+			data.addRow(["build rom", obj[i].RoBuildDisplayId.String]);
+            data.addRow(["Mac adress", obj[i].MACAddress.String]);
+            data.addRow(["first activation", obj[i].FirstActivation.Time]);
+            data.addRow(["EMail", obj[i].ParentEmail]);
+			
+        }
+    }
+    var options = {
+        'title': 'Infos for tab'
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.Table(document.getElementById('infos'));
+    chart.draw(data, options);
+}
+
+function grise(element) {
+        var element = document.getElementById(element);
+		element.outerHTML = '';
+		delete element;
+		
+}
+
+function degrise(element) {
+	console.log("degrise");
+    var div = document.getElementById(element);
+	var divtab = document.getElementById("tab" );
+	if (div) {
+	console.log("balise ok");
+	} else {
+		divtab.innerHTML += '<div id="div1"><label for="Curef" id="label1"  style="display: block; text-align: left; float: left;">Curef :</label> <input type="text"   class="form-control" id="curefToSearch" ><br></div>';
+	}
+}
+
+ </script>
+
+</head>
+  <div id="navigation_layout" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <a class="logo"><img src="/KD-Group_logo_rgb.png" align="left" width="52" /></a>		
+  
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Kurio Analytics</a>
+                
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                <li><a href="/analytics_viewer_julien">Home</a></li>
+                    <li><a href="/login">Logout</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+<a class="logo"><img src="/kurio-logo.png" /></a>
+<br><br>
+ <body>
+ 
+<b>Find a device Where <b>
+<div id="container" align="center">
+<form action="/extract_serial_download" method="post">
+<div id="tab" >
+<div id="div1">
+<label for="Curef" id="label1"  style="display: block; /* La balise devient de type block. */
+	text-align: left;
+	float: left;">Curef :</label> <input type="text"   class="form-control" id="curefToSearch" ><br> 
+</div>
+</div>
+
+<div><label for="Serial" style="display: block; /* La balise devient de type block. */
+	text-align: left;
+	float: left;">Serial :</label> <input name="serialToSearch" type="text" class="form-control" id="serialToSearch"><br> 
+</div>
+<div><label for="Email"  style="display: block; /* La balise devient de type block. */
+	text-align: left;
+	float: left;">Email :</label> <input type="text"  class="form-control" id="emailToSearch"><br>
+</div>
+<div><label for="mac ad"  style="display: block; /* La balise devient de type block. */
+	text-align: left;
+	float: left;">Mac ad :</label><input type="text"  class="form-control" id="macAdressToSearch"><br>
+</div>
+<br><br>
+
+
+
+</div>
+<input type="radio"  name="searchLike" value="begin" checked="true"> Begins With 
+<input type="radio"  name="searchLike" value="contain"> Contains <br><br>
+<br><br>
+<label>
+<input type="radio" name="tabToSearch" value="register" onclick="grise('div1')" > 
+<img src="/Logo_Kurio_7.png" width="122">
+</label>
+<label>
+<input type="radio" name="tabToSearch" value="Serial"  onclick="grise('div1')"> 
+<img src="/kurioSseries.png" width="122">
+</label>
+
+<label>
+<input type="radio" name="tabToSearch" value="Serial_analytics"  onclick="grise('div1')">
+<img src="/KurioTAB_H60.png" width="122">
+</label>
+
+<label>
+<input type="radio" name="tabToSearch" value="Serial_analytics_v4"  onclick="degrise('div1')">
+<img src="/TAB2.png" width="122">
+</label>
+<br><br><br>
+<div id="container">
+<input type="submit" class="form-control" value="Download" />
+</form>
+<br><br>
+<input type="submit" class="form-control" value="Search" onclick="javascript:searchData()" >
+<br><br>
+
+</div>
+
+<div id="infos"></div>
+</body>
+</html>
